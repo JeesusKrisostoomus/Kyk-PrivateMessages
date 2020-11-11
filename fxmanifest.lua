@@ -25,10 +25,3 @@ server_scripts {
 client_scripts {
 	'client.lua'
 }
-
-exports {
-	'DoShortHudText',
-	'DoHudText',
-	'DoLongHudText',
-	'DoCustomHudText'
-}
