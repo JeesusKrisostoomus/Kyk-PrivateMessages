@@ -142,7 +142,7 @@ AddEventHandler('onResourceStart', function(resourceName)
 	if (GetCurrentResourceName() == resourceName) then
 		if (Config.disableChat == true and Config.screenMessages == false) then
 			print('Both "Chat Private Messages" and "Screen Private Messages" were disabled.\nForcing Chat Messages on')
-			Config.disableChat = true
+			Config.disableChat = false
 		end
 	end
 end)
