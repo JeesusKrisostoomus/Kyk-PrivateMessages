@@ -68,3 +68,19 @@ RegisterNetEvent('kyk_privatemessages:lastSender')
 AddEventHandler('kyk_privatemessages:lastSender', function(sender)
     lastSender = sender
 end)
+
+
+
+--[[ Taken from mythic_notify (https://github.com/wowpanda/mythic_notify) ]]
+RegisterNetEvent("kyk_privatemessages:SendAlert")
+AddEventHandler("kyk_privatemessages:SendAlert", function(data)
+	DoHudText(data.type, data.text)
+end)
+
+function DoHudText(type, text)
+	SendNUIMessage({
+		action = 'notif',
+		type = type,
+		text = text
+	})
+end
