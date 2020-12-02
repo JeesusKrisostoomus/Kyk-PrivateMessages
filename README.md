@@ -5,7 +5,7 @@ If you find any bugs/want to improve this resource you can either make a pull re
 If you do decide to make your own version of it then it would be nice if you credited me. Thanks and enjoy.
 
 ***WARNING***
-***I HAVENT HAD TIME, PEOPLE TO TEST THIS IN AN ACTUAL SERVER SO IT MIGHT NOT WORK AS YOU WOULD EXPECT. IF YOU HAVE TRIED IT OUT AND EVERYTHING WORKS AS IT SHOULD THEN PLEASE LET ME KNOW THROUGH EIGHTER A TICKET OR DISCORD DM. THANKS ENJOY.***
+***I HAVENT HAD TIME, PEOPLE TO TEST THIS IN AN ACTUAL SERVER SO IT MIGHT NOT WORK AS YOU WOULD EXPECT. IF YOU HAVE TRIED IT OUT AND EVERYTHING WORKS AS IT SHOULD THEN PLEASE LET ME KNOW THROUGH EIGHTER A TICKET OR DISCORD DM. THANKS, ENJOY.***
 
 ***Commands***
 - pm 'target id' 'message' [Example: pm 21 Hello my friend. This is an example.]
