@@ -11,7 +11,9 @@ Config.checkForUpdates = true --[[ You can either enable or disable auto update 
 Config.disableChat = false --[[ Either enable or disable messages that are being sent to chat ]]
 Config.screenMessages = true --[[ Either enable or disable messages being shown on screen ]]
 
-
+--[[ Logging ]]
+Config.logging = false --[[ If you want logs to be sent to your discord set this as true ]]
+Config.webhook = '' --[[ Set the webhook you want messages to be sent to ]]
 
 --[[
     INFO:

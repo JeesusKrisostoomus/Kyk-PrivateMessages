@@ -19,23 +19,35 @@ RegisterCommand("pm", function(source, args, rawCommand)
 	end
 
 	if message == "" then --[[ Check to prevent empty messages ]]
-		TriggerClientEvent('kyk_privatemessages:error', source, 'Message can\'t be empty ')
-		if (Config.chatOnly == false) then
-			TriggerClientEvent('kyk_privatemessages:SendAlert', target, { type = 'error', text = 'Message can\'t be empty' })
+		if source ~= 0 then
+			TriggerClientEvent('kyk_privatemessages:error', source, 'Message can\'t be empty ')
+			if (Config.chatOnly == false) then
+				TriggerClientEvent('kyk_privatemessages:SendAlert', target, { type = 'error', text = 'Message can\'t be empty' })
+			end
+			return
+		else
+			print('Message can\'t be empty!')
 		end
-		return
-	elseif (GetPlayerName(tonumber(target)) == nil or GetPlayerPing(target) == 0) then --[[ Check if player has ping if not then his not online if he is then wtf how does he have 0 ping]]
-		TriggerClientEvent('kyk_privatemessages:error', source, 'Invalid Target!')
-		if (Config.chatOnly == false) then
-			TriggerClientEvent('kyk_privatemessages:SendAlert', target, { type = 'error', text = 'Invalid Target!' })
+	elseif (GetPlayerName(tonumber(target))) == nil or GetPlayerPing(target) == 0 then --[[ Check if player has ping if not then his not online if he is then wtf how does he have 0 ping]]
+		if source ~= 0 then
+			TriggerClientEvent('kyk_privatemessages:error', source, 'Invalid Target!')
+			if (Config.chatOnly == false) then
+				TriggerClientEvent('kyk_privatemessages:SendAlert', target, { type = 'error', text = 'Invalid Target!' })
+			end
+			return
+		else
+			print('Invalid Target!')
 		end
-		return
 	elseif (target == source) then
-		TriggerClientEvent('kyk_privatemessages:error', source, 'Listen here. You are not supposed to send urself private messages!')
-		if Config.screenMessages then
-			TriggerClientEvent('kyk_privatemessages:SendAlert', target, { type = 'error', text = 'Listen here. You are not supposed to send urself private messages!' })
+		if source ~= 0 then
+			TriggerClientEvent('kyk_privatemessages:error', source, 'Listen here. You are not supposed to send urself private messages!')
+			if Config.screenMessages then
+				TriggerClientEvent('kyk_privatemessages:SendAlert', target, { type = 'error', text = 'Listen here. You are not supposed to send urself private messages!' })
+			end
+			return
+		else
+			print('You are not supposed to send urself private messages!')
 		end
-		return
 	else
 		messagesSent = messagesSent + 1
 		if (source == 0) then --[[ If the source was console then you will not be able to reply to it. ]]
@@ -52,6 +64,12 @@ RegisterCommand("pm", function(source, args, rawCommand)
 			TriggerClientEvent('chat:addMessage', source, { args = { '^7^2Private Message Sent To ^1^*'..GetPlayerName(target)..' (ID: '..tonumber(target)..')^r^7' }, color = 255,255,255 })
 			if Config.screenMessages then
 				TriggerClientEvent('kyk_privatemessages:SendAlert', source, { type = 'success', text = 'Message sent to: '..GetPlayerName(target)..' (ID: '..tonumber(target)..')'..' successfully.' })
+			end
+			if Config.logging then
+				sendToDiscord('***Source:*** '..GetPlayerName(source)..' - '..GetPlayerIdentifier(source)..' - ID: '..source..
+					'\n***Target:*** '..GetPlayerName(target)..' - '..GetPlayerIdentifier(source)..' - ID: '..target..
+					'\n***Message:*** '..message
+				)
 			end
 
 			--[[ Reciever(target) stuff ]]
@@ -85,7 +103,7 @@ end
 
 --[[ Check for updates system ( Update code gotten from EasyAdmin version checker) ]]
 if Config.checkForUpdates then
-	local version = '1.0'
+	local version = '1.1'
 	local resourceName = "Kyk-PrivateMessages ("..GetCurrentResourceName()..")"
 	
 	Citizen.CreateThread(function()
@@ -112,6 +130,19 @@ if Config.checkForUpdates then
 	end)
 end
 
+sendToDiscord = function(message)
+	local embed = {
+        {
+            ["color"] = 16753920, --[[ Default Color: Orange ]]
+            ["title"] = "** New Private Message **",
+            ["description"] = message,
+            ["footer"] = {
+                ["text"] = os.date("Sent at: %H:%M %Y.%m.%d"),
+            },
+        }
+    }
+	PerformHttpRequest(Config.webhook, function(err, text, headers) end, 'POST', json.encode({username = name, embeds = embed}), { ['Content-Type'] = 'application/json' })
+end
 
 --[[
 	Registered Events
@@ -132,6 +163,14 @@ AddEventHandler('kyk_privatemessages:reply', function(lastSender, args)
 	TriggerClientEvent('chat:addMessage', lastSender, { args = { '^7[^2Message Recieved From ^1'..GetPlayerName(tonumber(source))..'^7]: '..message }, color = 255,255,255 })
 	if Config.screenMessages then
 		TriggerClientEvent('kyk_privatemessages:SendAlert', target, { type = 'inform', text = 'Private Message Recieved<br>Sender: '..GetPlayerName(source)..' (ID: '..tonumber(source)..')<br><br>Message: '..message })
+	end
+
+	--[[ Logging stuff ]]
+	if Config.logging then
+		sendToDiscord('***Source:*** '..GetPlayerName(source)..' - '..GetPlayerIdentifier(source)..' - ID: '..source..
+			'\n***Target:*** '..GetPlayerName(target)..' - '..GetPlayerIdentifier(source)..' - ID: '..target..
+			'\n***Message:*** '..message
+		)
 	end
 
 	replys = replys + 1
