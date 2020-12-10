@@ -38,16 +38,16 @@ RegisterCommand("pm", function(source, args, rawCommand)
 		else
 			print('Invalid Target!')
 		end
-	elseif (target == source) then
-		if source ~= 0 then
-			TriggerClientEvent('kyk_privatemessages:error', source, 'Listen here. You are not supposed to send urself private messages!')
-			if Config.screenMessages then
-				TriggerClientEvent('kyk_privatemessages:SendAlert', target, { type = 'error', text = 'Listen here. You are not supposed to send urself private messages!' })
-			end
-			return
-		else
-			print('You are not supposed to send urself private messages!')
-		end
+	--elseif (target == source) then
+	--	if source ~= 0 then
+	--		TriggerClientEvent('kyk_privatemessages:error', source, 'Listen here. You are not supposed to send urself private messages!')
+	--		if Config.screenMessages then
+	--			TriggerClientEvent('kyk_privatemessages:SendAlert', target, { type = 'error', text = 'Listen here. You are not supposed to send urself private messages!' })
+	--		end
+	--		return
+	--	else
+	--		print('You are not supposed to send urself private messages!')
+	--	end
 	else
 		messagesSent = messagesSent + 1
 		if (source == 0) then --[[ If the source was console then you will not be able to reply to it. ]]
@@ -156,13 +156,13 @@ AddEventHandler('kyk_privatemessages:reply', function(lastSender, args)
 	--[[ Source stuff ]]
 	TriggerClientEvent('chat:addMessage', source, { args = { '^7^2Reply Sent to ^1'..GetPlayerName(lastSender) }, color = 255,255,255 })
 	if Config.screenMessages then
-		TriggerClientEvent('kyk_privatemessages:SendAlert', source, { type = 'success', text = 'Reply sent to: '..GetPlayerName(target)..' (ID: '..tonumber(target)..')'..' successfully.' })
+		TriggerClientEvent('kyk_privatemessages:SendAlert', source, { type = 'success', text = 'Reply sent to: '..GetPlayerName(lastSender)..' (ID: '..tonumber(lastSender)..')'..' successfully.' })
 	end
 
 	--[[ Reciever stuff ]]
 	TriggerClientEvent('chat:addMessage', lastSender, { args = { '^7[^2Message Recieved From ^1'..GetPlayerName(tonumber(source))..'^7]: '..message }, color = 255,255,255 })
 	if Config.screenMessages then
-		TriggerClientEvent('kyk_privatemessages:SendAlert', target, { type = 'inform', text = 'Private Message Recieved<br>Sender: '..GetPlayerName(source)..' (ID: '..tonumber(source)..')<br><br>Message: '..message })
+		TriggerClientEvent('kyk_privatemessages:SendAlert', lastSender, { type = 'inform', text = 'Private Message Recieved<br>Sender: '..GetPlayerName(lastSender)..' (ID: '..tonumber(source)..')<br><br>Message: '..message })
 	end
 
 	--[[ Logging stuff ]]
