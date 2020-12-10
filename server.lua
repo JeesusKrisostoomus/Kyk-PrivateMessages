@@ -38,16 +38,16 @@ RegisterCommand("pm", function(source, args, rawCommand)
 		else
 			print('Invalid Target!')
 		end
-	--elseif (target == source) then
-	--	if source ~= 0 then
-	--		TriggerClientEvent('kyk_privatemessages:error', source, 'Listen here. You are not supposed to send urself private messages!')
-	--		if Config.screenMessages then
-	--			TriggerClientEvent('kyk_privatemessages:SendAlert', target, { type = 'error', text = 'Listen here. You are not supposed to send urself private messages!' })
-	--		end
-	--		return
-	--	else
-	--		print('You are not supposed to send urself private messages!')
-	--	end
+	elseif (target == source) then
+		if source ~= 0 then
+			TriggerClientEvent('kyk_privatemessages:error', source, 'Listen here. You are not supposed to send urself private messages!')
+			if Config.screenMessages then
+				TriggerClientEvent('kyk_privatemessages:SendAlert', target, { type = 'error', text = 'Listen here. You are not supposed to send urself private messages!' })
+			end
+			return
+		else
+			print('You are not supposed to send urself private messages!')
+		end
 	else
 		messagesSent = messagesSent + 1
 		if (source == 0) then --[[ If the source was console then you will not be able to reply to it. ]]
