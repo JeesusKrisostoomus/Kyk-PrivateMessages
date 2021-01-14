@@ -51,6 +51,7 @@ RegisterCommand("pm", function(source, args, rawCommand)
 	else
 		messagesSent = messagesSent + 1
 		if (source == 0) then --[[ If the source was console then you will not be able to reply to it. ]]
+			--[[
 			print('Message Sent To ^1'..GetPlayerName(target))
 			if not Config.disableChat then
 				TriggerClientEvent('chat:addMessage', args[1], { args = { '^7[^2Message Recieved From ^1^*Console^r^7]: '..message }, color = 255,255,255 })
@@ -58,10 +59,13 @@ RegisterCommand("pm", function(source, args, rawCommand)
 			if Config.screenMessages then
 				TriggerClientEvent('kyk_privatemessages:SendAlert', target, { type = 'inform', text = 'Private Message Recieved<br>Sender: Console<br><br>Message: '..message })
 			end
+			]]
 		else
 			TriggerClientEvent('kyk_privatemessages:lastSender', target, tonumber(source))
 			--[[ Source(sender) stuff ]]
-			TriggerClientEvent('chat:addMessage', source, { args = { '^7^2Private Message Sent To ^1^*'..GetPlayerName(target)..' (ID: '..tonumber(target)..')^r^7' }, color = 255,255,255 })
+			if (Config.disableChat == false) then
+				TriggerClientEvent('chat:addMessage', source, { args = { '^7^2Private Message Sent To ^1^*'..GetPlayerName(target)..' (ID: '..tonumber(target)..')^r^7' }, color = 255,255,255 })
+			end
 			if Config.screenMessages then
 				TriggerClientEvent('kyk_privatemessages:SendAlert', source, { type = 'success', text = 'Message sent to: '..GetPlayerName(target)..' (ID: '..tonumber(target)..')'..' successfully.' })
 			end
@@ -73,7 +77,9 @@ RegisterCommand("pm", function(source, args, rawCommand)
 			end
 
 			--[[ Reciever(target) stuff ]]
-			TriggerClientEvent('chat:addMessage', target, { args = { '^7^*[^2Message Recieved From ^1'..GetPlayerName(tonumber(source))..' (ID: '..tonumber(source)..')^r^7]: '..message }, color = 255,255,255 })
+			if (Config.disableChat == false) then
+				TriggerClientEvent('chat:addMessage', target, { args = { '^7^*[^2Message Recieved From ^1'..GetPlayerName(tonumber(source))..' (ID: '..tonumber(source)..')^r^7]: '..message }, color = 255,255,255 })
+			end
 			if Config.screenMessages then
 				TriggerClientEvent('kyk_privatemessages:SendAlert', target, { type = 'inform', text = 'Private Message Recieved<br>Sender: '..GetPlayerName(source)..' (ID: '..tonumber(source)..')<br><br>Message: '..message })
 			end
@@ -103,7 +109,7 @@ end
 
 --[[ Check for updates system ( Update code gotten from EasyAdmin version checker) ]]
 if Config.checkForUpdates then
-	local version = '1.1'
+	local version = '1.4'
 	local resourceName = "Kyk-PrivateMessages ("..GetCurrentResourceName()..")"
 	
 	Citizen.CreateThread(function()
@@ -154,13 +160,17 @@ AddEventHandler('kyk_privatemessages:reply', function(lastSender, args)
 	TriggerClientEvent('kyk_privatemessages:lastSender', lastSender, tonumber(source))
 
 	--[[ Source stuff ]]
-	TriggerClientEvent('chat:addMessage', source, { args = { '^7^2Reply Sent to ^1'..GetPlayerName(lastSender) }, color = 255,255,255 })
+	if (Config.disableChat == false) then
+		TriggerClientEvent('chat:addMessage', source, { args = { '^7^2Reply Sent to ^1'..GetPlayerName(lastSender) }, color = 255,255,255 })
+	end
 	if Config.screenMessages then
 		TriggerClientEvent('kyk_privatemessages:SendAlert', source, { type = 'success', text = 'Reply sent to: '..GetPlayerName(lastSender)..' (ID: '..tonumber(lastSender)..')'..' successfully.' })
 	end
 
 	--[[ Reciever stuff ]]
-	TriggerClientEvent('chat:addMessage', lastSender, { args = { '^7[^2Message Recieved From ^1'..GetPlayerName(tonumber(source))..'^7]: '..message }, color = 255,255,255 })
+	if (Config.disableChat == false) then
+		TriggerClientEvent('chat:addMessage', lastSender, { args = { '^7[^2Message Recieved From ^1'..GetPlayerName(tonumber(source))..'^7]: '..message }, color = 255,255,255 })
+	end
 	if Config.screenMessages then
 		TriggerClientEvent('kyk_privatemessages:SendAlert', lastSender, { type = 'inform', text = 'Private Message Recieved<br>Sender: '..GetPlayerName(lastSender)..' (ID: '..tonumber(source)..')<br><br>Message: '..message })
 	end
