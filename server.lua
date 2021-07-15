@@ -38,7 +38,7 @@ RegisterCommand("pm", function(source, args, rawCommand)
 		else
 			print('Invalid Target!')
 		end
-	elseif (target == source) then
+	elseif (target == 999) then
 		if source ~= 0 then
 			TriggerClientEvent('kyk_privatemessages:error', source, 'Listen here. You are not supposed to send urself private messages!')
 			if Config.screenMessages then
@@ -78,10 +78,10 @@ RegisterCommand("pm", function(source, args, rawCommand)
 
 			--[[ Reciever(target) stuff ]]
 			if (Config.disableChat == false) then
-				TriggerClientEvent('chat:addMessage', target, { args = { '^7^*[^2Message Recieved From ^1'..GetPlayerName(tonumber(source))..' (ID: '..tonumber(source)..')^r^7]: '..message }, color = 255,255,255 })
+				TriggerClientEvent('chat:addMessage', target, { args = { '^7^*^2Message Recieved From ^1'..GetPlayerName(tonumber(source))..' (ID: '..tonumber(source)..')^r^7: '..message }, color = 255,255,255 })
 			end
 			if Config.screenMessages then
-				TriggerClientEvent('kyk_privatemessages:SendAlert', target, { type = 'inform', text = 'Private Message Recieved<br>Sender: '..GetPlayerName(source)..' (ID: '..tonumber(source)..')<br><br>Message: '..message })
+				TriggerClientEvent('kyk_privatemessages:SendAlert', target, { type = 'inform', text = 'Private Message Recieved From '..GetPlayerName(source)..' (ID: '..tonumber(source)..') | Message: '..message })
 			end
 		end
 	end
@@ -109,7 +109,7 @@ end
 
 --[[ Check for updates system ( Update code gotten from EasyAdmin version checker) ]]
 if Config.checkForUpdates then
-	local version = '1.4'
+	local version = '1.5'
 	local resourceName = "Kyk-PrivateMessages ("..GetCurrentResourceName()..")"
 	
 	Citizen.CreateThread(function()
@@ -130,7 +130,7 @@ if Config.checkForUpdates then
 			SetTimeout(3600000, checkVersionHTTPRequest) --[[ Makes the version check repeat every 1h ]]
 		end
 		function checkVersionHTTPRequest() --[[ Registers checkVersionHTTPRequest function ]]
-			PerformHttpRequest("https://raw.githubusercontent.com/JeesusKrisostoomus/Kyk-Releases/main/versions.json", checkVersion, "GET") --[[ Sends GET http requests ]]
+			PerformHttpRequest("https://raw.githubusercontent.com/JeesusKrisostoomus/Kyk-Releases/main/versions.json", checkVersion, "GET")
 		end
 		checkVersionHTTPRequest() --[[ Calls checkVersionHTTPRequest function ]]
 	end)

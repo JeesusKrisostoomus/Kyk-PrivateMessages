@@ -6,8 +6,7 @@ end
 --[[
     Variables
 ]]
-local lastSender
-
+local lastSender = ""
 
 --[[
     Reply Commands
@@ -26,7 +25,6 @@ RegisterCommand("reply", function(source, args, rawCommand) --[[ Reply Command ]
         TriggerServerEvent('kyk_privatemessages:reply', lastSender, args)
     end
 end, false)
-
 
 --[[
     Chat Suggestions
@@ -69,18 +67,12 @@ AddEventHandler('kyk_privatemessages:lastSender', function(sender)
     lastSender = sender
 end)
 
-
-
 --[[ Taken from mythic_notify (https://github.com/wowpanda/mythic_notify) ]]
 RegisterNetEvent("kyk_privatemessages:SendAlert")
 AddEventHandler("kyk_privatemessages:SendAlert", function(data)
-	DoHudText(data.type, data.text)
-end)
-
-function DoHudText(type, text)
-	SendNUIMessage({
+    SendNUIMessage({
 		action = 'notif',
-		type = type,
-		text = text
+		type = data.type,
+		text = data.text
 	})
-end
+end)

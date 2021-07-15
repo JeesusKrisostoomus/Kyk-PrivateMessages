@@ -1,4 +1,4 @@
-fx_version 'cerulean'
+fx_version 'cerulean' --IF fx_version is not set or something then try adamant or bodacious
 games { 'gta5' }
 
 author 'Jeesus Krisostoomus#7737'
